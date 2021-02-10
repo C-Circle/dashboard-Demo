@@ -46,5 +46,5 @@
 
 ## 参考资料
 
-- [五分钟上手Echarts](https://echarts.apache.org/zh/tutorial.html#5 分钟上手 ECharts)
+- [五分钟上手Echarts](https://echarts.apache.org/zh/tutorial.html)
 - [Flask 0.10.1 文档](http://docs.jinkan.org/docs/flask/tutorial/introduction.html)
