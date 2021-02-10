@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Timing数据可视化</title>
+        <link rel="stylesheet" href="../static/css/index.css" />
+        <script src="../static/js/rank.js"></script>
+    </head>
+<body>
+    <!-- 头部的盒子 -->
+    <header>
+        <h1>Timing数据可视化-Echarts</h1>
+        <div class="showTime"></div>
+        <script>
+            var t = null;
+            t = setTimeout(time, 1000);//開始运行
+            function time() {
+                clearTimeout(t);//清除定时器
+                dt = new Date();
+                var y = dt.getFullYear();
+                var mt = dt.getMonth() + 1;
+                var day = dt.getDate();
+                var h = dt.getHours();//获取时
+                var m = dt.getMinutes();//获取分
+                var s = dt.getSeconds();//获取秒
+                document.querySelector(".showTime").innerHTML = "当前时间：" + y + "年" + mt + "月" + day + "日-" + h + "时" + m + "分" + s + "秒";
+                t = setTimeout(time, 1000); //设定定时器，循环运行     
+            }
+        </script>
+    </header>
+    <!-- 页面主体 -->
+    <section class="mainbox">
+        <div class="column">
+            <div class="panel bar">
+                <h2>性别分布</h2>
+                <div class="chart">图表</div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="panel line">
+                <h2>
+                    学习天数分布 
+                    <a href="javascrip:;">2020</a>
+                    <a href="javascrip:;">2021</a>
+                </h2>
+                <div class="chart">图表</div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="panel pie">
+                <h2>学习日均时长分布</h2>
+                <div class="chart">图表</div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="column">
+            <!-- no模块制作 -->
+            <div class="no">
+                <div class="no-hd">
+                    <ul>
+                        <li>132451</li>
+                        <li>236542</li>
+                        <li>366542</li>
+                    </ul>
+                </div>
+                <div class="no-bd">
+                    <ul>
+                        <li>用户总数</li>
+                        <li>男用户</li>
+                        <li>女用户</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="no">
+                <div class="no-hd">
+                    <ul>
+                        <li>132451</li>
+                        <li>236542</li>
+                        <li>366542</li>
+                    </ul>
+                </div>
+                <div class="no-bd">
+                    <ul>
+                        <li>动态总数</li>
+                        <li>Svlog总数</li>
+                        <li>日记总数</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="no">
+                <div class="no-bd">
+                    <tab>
+                        <li>
+                            <button class="tablinks" id="WordCloud" onclick="javascrip:WordCloud(event, 'WordCloud');">类别词云</button>
+                        </li>
+                        <li>
+                            <button class="tablinks" id="fansCount" onclick="javascrip:Rank(event, 'fansCount');">粉丝排行</button>
+                        </li>
+                        <li>
+                            <button class="tablinks" id="totalDuration" onclick="javascrip:Rank(event, 'totalDuration');">时长排行</button>
+                        </li>
+                        <li>
+                            <button class="tablinks" id="dynamic" onclick="javascrip:Rank(event, 'dynamic');">动态排行</button>
+                        </li>
+                        <li>
+                            <button class="tablinks" id="svlog" onclick="javascrip:Rank(event, 'svlog');">Svlog排行</button>
+                        </li>
+                        <li>
+                            <button class="tablinks" id="feed" onclick="javascrip:Rank(event, 'feed');">日记排行</button>
+                        </li>
+                        <li>
+                            <button class="tablinks" id="gainLike" onclick="javascrip:Rank(event, 'gainLike');">获赞排行</button>
+                        </li>
+                        <li>
+                            <button class="tablinks" id="learningDays" onclick="javascrip:Rank(event, 'learningDays');">天数排行</button>
+                        </li>
+                    </tab>
+                </div>
+            </div>
+            <!-- 地图模块 -->
+            <div class="map" id="3dwordcloud">
+                <div class="map1"></div>
+                <div class="map2"></div>
+                <div class="map3"></div>
+                <div class="chart"></div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="panel bar2">
+                <h2>年龄分布</h2>
+                <div class="chart">图表</div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="panel line2">
+                <h2>粉丝数分布</h2>
+                <div class="chart">图表</div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="panel pie2">
+                <h2>累计学习时长分布</h2>
+                <div class="chart">图表</div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+    </section>
+    <script src="../static/js/flexible.js"></script>
+    <script src="../static/js/echarts.min.js"></script>
+    <script src="../static/js/echarts-wordcloud.min.js"></script>
+    <!-- 先引入jquery -->
+    <script src="../static/js/jquery.js"></script>
+    <!-- 必须先引入china.js 这个文件 因为中国地图需要 -->
+    <script src="../static/js/china.js"></script>
+    <script src="../static/js/index.js"></script>
+    <!-- 请求数据 -->
+    <script>
+        function get_statistic() {
+            $.ajax({
+                url:"/data?dname=statistic",
+                success:function (data){
+                    $(".no-hd li").eq(0).text(data.total);
+                    $(".no-hd li").eq(1).text(data.male);
+                    $(".no-hd li").eq(2).text(data.female);
+                    $(".no-hd li").eq(3).text(data.dynamic);
+                    $(".no-hd li").eq(4).text(data.svlog);
+                    $(".no-hd li").eq(5).text(data.feed);
+                },
+                error:function (xhr, type, errorThrown) {
+                }
+            })
+        }
+        setInterval(get_statistic, 1000 * 1) // 1秒更新一次
+    </script>
+    <script src="../static/js/3dwordcloud.js"></script>
+    <!-- <script>
+        var words = [{label: "考研", color: "#FFCEBE", "fontSize": 18, url: "", target: ""}, {label: "英语", color: "#5F023A", "fontSize": 29, url: "", target: ""}, {label: "高考", color: "#094F59", "fontSize": 21, url: "", target: ""}, {label: "英语六级", color: "#FFCEBE", "fontSize": 20, url: "", target: ""}, {label: "中考", color: "#CD2C6C", "fontSize": 20, url: "", target: ""}, {label: "雅思", color: "#5F023A", "fontSize": 20, url: "", target: ""}, {label: "阅读", color: "#108292", "fontSize": 19, url: "", target: ""}, {label: "英语四级", color: "#5F023A", "fontSize": 19, url: "", target: ""}, {label: "日语", color: "#5F023A", "fontSize": 18, url: "", target: ""}, {label: "中小学教师资格", color: "#094F59", "fontSize": 18, url: "", target: ""}, {label: "写作", color: "#108292", "fontSize": 18, url: "", target: ""}, {label: "手账", color: "#CD2C6C", "fontSize": 18, url: "", target: ""}, {label: "健身", color: "#094F59", "fontSize": 18, url: "", target: ""}, {label: "绘画", color: "#094F59", "fontSize": 18, url: "", target: ""}, {label: "公务员", color: "#108292", "fontSize": 17, url: "", target: ""}, {label: "注册会计师(CPA)", color: "#CD2C6C", "fontSize": 17, url: "", target: ""}, {label: "小升初", color: "#CD2C6C", "fontSize": 17, url: "", target: ""}, {label: "法律职业资格考试", color: "#094F59", "fontSize": 17, url: "", target: ""}, {label: "初级会计", color: "#094F59", "fontSize": 17, url: "", target: ""}, {label: "视频剪辑", color: "#CD2C6C", "fontSize": 17, url: "", target: ""}, {label: "书法", color: "#FFCEBE", "fontSize": 17, url: "", target: ""}, {label: "学习", color: "#108292", "fontSize": 17, url: "", target: ""}, {label: "专升本", color: "#5F023A", "fontSize": 17, url: "", target: ""}, {label: "教育编制", color: "#108292", "fontSize": 17, url: "", target: ""}, {label: "唱歌", color: "#5F023A", "fontSize": 17, url: "", target: ""}, {label: "自律", color: "#108292", "fontSize": 16, url: "", target: ""}, {label: "数学", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "托福", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "摄影", color: "#108292", "fontSize": 16, url: "", target: ""}, {label: "python", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "事业编制", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "注册会计师", color: "#108292", "fontSize": 16, url: "", target: ""}, {label: "英语专八", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "跑步", color: "#5F023A", "fontSize": 16, url: "", target: ""}, {label: "吉他", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "文学", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "执业医师", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "历史", color: "#FFCEBE", "fontSize": 16, url: "", target: ""}, {label: "GRE", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "英语专四", color: "#5F023A", "fontSize": 16, url: "", target: ""}, {label: "韩语", color: "#108292", "fontSize": 16, url: "", target: ""}, {label: "画画", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "法律硕士", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "演讲", color: "#5F023A", "fontSize": 16, url: "", target: ""}, {label: "篮球", color: "#5F023A", "fontSize": 16, url: "", target: ""}, {label: "计算机二级", color: "#5F023A", "fontSize": 16, url: "", target: ""}, {label: "小语种", color: "#108292", "fontSize": 16, url: "", target: ""}, {label: "考博", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "法语", color: "#5F023A", "fontSize": 16, url: "", target: ""}, {label: "税务师", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "钢琴", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "自考", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "21考研", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "特许金融分析师(CFA)", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "二战", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "减肥", color: "#FFCEBE", "fontSize": 16, url: "", target: ""}, {label: "论文", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "舞蹈", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "国际注册会计师(ACCA)", color: "#094F59", "fontSize": 16, url: "", target: ""}, {label: "运动", color: "#108292", "fontSize": 16, url: "", target: ""}, {label: "计算机", color: "#5F023A", "fontSize": 16, url: "", target: ""}, {label: "高校教师资格", color: "#FFCEBE", "fontSize": 16, url: "", target: ""}, {label: "尤克里里", color: "#5F023A", "fontSize": 16, url: "", target: ""}, {label: "街舞", color: "#FFCEBE", "fontSize": 16, url: "", target: ""}, {label: "德语", color: "#FFCEBE", "fontSize": 16, url: "", target: ""}, {label: "年级前十", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "语文", color: "#FFCEBE", "fontSize": 16, url: "", target: ""}, {label: "化妆", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "GMAT", color: "#5F023A", "fontSize": 16, url: "", target: ""}, {label: "复试", color: "#CD2C6C", "fontSize": 16, url: "", target: ""}, {label: "中级会计", color: "#5F023A", "fontSize": 16, url: "", target: ""}]
+        console.log(words);
+        var canvas = document.querySelector(".map .chart");
+        //调用WordCloud
+        SVG3DTagCloud(canvas, words);
+        setInterval(get_words, 1000 * 10)
+    </script> -->
+    <script>
+        var words = [{'label': '考研','labelNum': 12383,'color': '#DCD964','fontSize': 42,'url': '','target': ''}, {'label': '英语','labelNum': 7254,'color': '#DCD964','fontSize': 31,'url': '','target': ''}, {'label': '高考','labelNum': 2518,'color': '#7EA00E','fontSize': 21,'url': '','target': ''}, {'label': '英语六级','labelNum': 2494,'color': '#7EA00E','fontSize': 21,'url': '','target': ''}, {'label': '英语四级','labelNum': 2036,'color': '#54C0CC','fontSize': 20,'url': '','target': ''}, {'label': '阅读','labelNum': 1955,'color': '#213502','fontSize': 20,'url': '','target': ''}, {'label': '中考','labelNum': 1868,'color': '#DCD964','fontSize': 19,'url': '','target': ''}, {'label': '雅思','labelNum': 1776,'color': '#54C0CC','fontSize': 19,'url': '','target': ''}, {'label': '健身','labelNum': 1529,'color': '#DCD964','fontSize': 19,'url': '','target': ''}, {'label': '绘画','labelNum': 1392,'color': '#213502','fontSize': 18,'url': '','target': ''}, {'label': '日语','labelNum': 1369,'color': '#DCD964','fontSize': 18,'url': '','target': ''}, {'label': '写作','labelNum': 1339,'color': '#1F4F59','fontSize': 18,'url': '','target': ''}, {'label': '手账','labelNum': 1312,'color': '#1F4F59','fontSize': 18,'url': '','target': ''}, {'label': '中小学教师资格','labelNum': 1225,'color': '#213502','fontSize': 18,'url': '','target': ''}, {'label': '注册会计师(CPA)','labelNum': 1013,'color': '#DCD964','fontSize': 18,'url': '','target': ''}, {'label': '公务员','labelNum': 960,'color': '#DCD964','fontSize': 18,'url': '','target': ''}, {'label': '小升初','labelNum': 912,'color': '#213502','fontSize': 17,'url': '','target': ''}, {'label': '初级会计','labelNum': 806,'color': '#1F4F59','fontSize': 17,'url': '','target': ''}, {'label': '数学','labelNum': 804,'color': '#7EA00E','fontSize': 17,'url': '','target': ''}, {'label': '视频剪辑','labelNum': 783,'color': '#213502','fontSize': 17,'url': '','target': ''}, {'label': '法律职业资格考试','labelNum': 749,'color': '#1F4F59','fontSize': 17,'url': '','target': ''}, {'label': '学习','labelNum': 727,'color': '#1F4F59','fontSize': 17,'url': '','target': ''}, {'label': '唱歌','labelNum': 706,'color': '#54C0CC','fontSize': 17,'url': '','target': ''}, {'label': '专升本','labelNum': 704,'color': '#DCD964','fontSize': 17,'url': '','target': ''}, {'label': '书法','labelNum': 663,'color': '#213502','fontSize': 17,'url': '','target': ''}, {'label': '自律','labelNum': 586,'color': '#213502','fontSize': 17,'url': '','target': ''}, {'label': '摄影','labelNum': 567,'color': '#54C0CC','fontSize': 17,'url': '','target': ''}, {'label': '教育编制','labelNum': 532,'color': '#213502','fontSize': 17,'url': '','target': ''}, {'label': '跑步','labelNum': 512,'color': '#7EA00E','fontSize': 17,'url': '','target': ''}, {'label': 'python','labelNum': 489,'color': '#DCD964','fontSize': 17,'url': '','target': ''}, {'label': '事业编制','labelNum': 452,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '吉他','labelNum': 391,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '文学','labelNum': 385,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '托福','labelNum': 373,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '注册会计师','labelNum': 368,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': '英语专八','labelNum': 354,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '语文','labelNum': 339,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '韩语','labelNum': 318,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '执业医师','labelNum': 314,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': '历史','labelNum': 303,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': '英语专四','labelNum': 289,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': '篮球','labelNum': 283,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '演讲','labelNum': 249,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '钢琴','labelNum': 241,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '税务师','labelNum': 231,'color': '#7EA00E','fontSize': 16,'url': '','target': ''}, {'label': 'GRE','labelNum': 206,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '画画','labelNum': 198,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '考博','labelNum': 192,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '法律硕士','labelNum': 185,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '计算机二级','labelNum': 184,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': '法语','labelNum': 184,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '21考研','labelNum': 177,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': '国际注册会计师(ACCA)','labelNum': 175,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '自考','labelNum': 174,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '减肥','labelNum': 173,'color': '#7EA00E','fontSize': 16,'url': '','target': ''}, {'label': '街舞','labelNum': 172,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '配音','labelNum': 169,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '中级会计','labelNum': 162,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': '尤克里里','labelNum': 161,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '修图','labelNum': 158,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '电子竞技','labelNum': 158,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '小语种','labelNum': 156,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '计算机','labelNum': 151,'color': '#7EA00E','fontSize': 16,'url': '','target': ''}, {'label': '化妆','labelNum': 151,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '论文','labelNum': 147,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '特许金融分析师(CFA)','labelNum': 147,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': '舞蹈','labelNum': 145,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '二战','labelNum': 141,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '运动','labelNum': 139,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '高校教师资格','labelNum': 138,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '德语','labelNum': 138,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '古筝','labelNum': 135,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '烘焙','labelNum': 128,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': 'DIY','labelNum': 125,'color': '#7EA00E','fontSize': 16,'url': '','target': ''}, {'label': '医学','labelNum': 123,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '拉丁舞','labelNum': 116,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '写作业','labelNum': 113,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '初一','labelNum': 111,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '幼师资格','labelNum': 108,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '编程','labelNum': 107,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '年级前十','labelNum': 104,'color': '#7EA00E','fontSize': 16,'url': '','target': ''}, {'label': '理科','labelNum': 100,'color': '#7EA00E','fontSize': 16,'url': '','target': ''}, {'label': '教资','labelNum': 100,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '心理学','labelNum': 98,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '执业护士','labelNum': 96,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '诗歌','labelNum': 93,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '法硕','labelNum': 92,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': 'GMAT','labelNum': 91,'color': '#7EA00E','fontSize': 16,'url': '','target': ''}, {'label': '艺考','labelNum': 91,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '初二','labelNum': 89,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '羽毛球','labelNum': 86,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '期末考试','labelNum': 82,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '高一','labelNum': 81,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '物理','labelNum': 80,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}, {'label': '二级建造师','labelNum': 79,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': '复试','labelNum': 78,'color': '#213502','fontSize': 16,'url': '','target': ''}, {'label': '临床医学','labelNum': 78,'color': '#7EA00E','fontSize': 16,'url': '','target': ''}, {'label': '保研','labelNum': 77,'color': '#DCD964','fontSize': 16,'url': '','target': ''}, {'label': 'ACCA','labelNum': 76,'color': '#54C0CC','fontSize': 16,'url': '','target': ''}, {'label': '动画制作','labelNum': 75,'color': '#1F4F59','fontSize': 16,'url': '','target': ''}]
+        var canvas = document.querySelector(".map .chart");
+        function WordCloud(evt, pagrams) {
+            var i, tabcontent, tablinks;
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            <!-- document.getElementById(pagrams).style.display = "block"; -->
+            document.getElementById(pagrams).className += " active";
+            <!-- evt.currentTarget.className += " active"; -->
+            //调用WordCloud
+            SVG3DTagCloud(canvas, words);
+        }
+		WordCloud(event, 'WordCloud');
+        <!-- setInterval(get_words, 1000 * 5) -->
+    </script>
+</body>
+</html>
