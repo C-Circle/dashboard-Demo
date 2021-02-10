@@ -1,15 +1,10 @@
 // Rank
 function Rank(evt, pagrams) { //key为数据名称(fansCount totalDuration dynamic)
     var i, tabcontent, tablinks;
-    // tabcontent = document.getElementsByClassName("tabcontent");
-    // for (i = 0; i < tabcontent.length; i++) {
-        // tabcontent[i].style.display = "none";
-    // }
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    // document.getElementById(pagrams).style.display = "block";
     evt.currentTarget.className += " active";
 
 
@@ -205,9 +200,6 @@ function Rank(evt, pagrams) { //key为数据名称(fansCount totalDuration dynam
                     }
                 },
                 formatter: function(value, index) { // 当前显示的数据值、索引（使用dataZoom后，index为在部分数据的索引）
-                    // if (index == option.yAxis.data.length) {
-                        // index = 0;
-                    // }
                     index = option.yAxis.data.indexOf(value) + 1; // 当前元素在整个数据中的索引+1
                     if (index - 1 < 3) {
                         return [
@@ -251,21 +243,5 @@ function Rank(evt, pagrams) { //key为数据名称(fansCount totalDuration dynam
     window.addEventListener("resize", function() {
     myChart.resize();
     });
-    console.log("update rank")
-    // function update_data6() {
-		// $.ajax({
-			// url:"/data?dname=data6",
-            // timeout: 10000, //超时时间设置，单位毫秒
-			// success:function (data){
-				// option["series"][0]["data"]=data;
-				// myChart.setOption(option);
-			// },
-			// error:function (xhr, type, errorThrown) {
-				// console.assert("Fail to get data...")
-			// }
-		// })
-		// return update_data6
-	// }
-	// setInterval(update_data6(), 1000 * 60 * 10) // 10分钟更新一次
     window.Rank = Rank;
 }{};

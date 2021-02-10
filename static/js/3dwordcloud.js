@@ -6,8 +6,6 @@ function SVG3DTagCloud() {
         }
         function i() {
             var wcid = document.getElementById("3dwordcloud"),
-			// e = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
-            // n = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight,
 			e = wcid.offsetWidth,  //宽度
 			n = wcid.offsetHeight,  //高度
             i = e,
@@ -281,14 +279,7 @@ function SVG3DTagCloud() {
             u(),
             i(),
             d(),
-            window.addEventListener("resize", y);
-            // window.addEventListener("resize", function() {
-				// var wcid = document.getElementById("3dwordcloud");
-				// A.setAttribute("height", wcid.offsetHeight), //高度
-				// A.setAttribute("width", wcid.offsetWidth), //宽度
-				// console.log(wch, wcw);
-			// });
-			
+            window.addEventListener("resize", y);		
         } (),
         I
     }
