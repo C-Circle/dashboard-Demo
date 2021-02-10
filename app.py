@@ -51,9 +51,9 @@ def get_data():
         data = []
     return jsonify(data)
 
-@app.route('/visualization')
+@app.route('/index')
 def echarts():
-    return render_template("./visualization.html")
+    return render_template("./index.html")
 
 if __name__ == '__main__':
     # server = pywsgi.WSGIServer(('0.0.0.0', 5000), app)

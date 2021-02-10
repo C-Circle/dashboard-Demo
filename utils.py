@@ -5,11 +5,11 @@ from bson.code import Code
 import pandas as pd
 
 import pymongo
-client = pymongo.MongoClient('192.168.31.65', 27017)
-timing = client['timing']
-timing.authenticate(
-    'mongoC', 'mmabc-z6')
-user_item = timing['user_item']
+client = pymongo.MongoClient('localhost', 27017)
+db = client['db_name']
+db.authenticate(
+    'username', 'password')
+collection = db['collection_name']
 
 # 加载颜色
 with open('myColors.json','r',encoding='utf-8') as f:
