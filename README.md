@@ -42,7 +42,7 @@
 
 ## 项目展示
 
-![echarts.png](E:\Python\Flask\web01\sp210210_212204.png)
+![echarts.png](https://github.com/C-Circle/dashboard-Demo/blob/main/images/Dashborad-Demo.png)
 
 ## 参考资料
 
